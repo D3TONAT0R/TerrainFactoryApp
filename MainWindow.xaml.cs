@@ -36,13 +36,8 @@ namespace HMConApp
 			console = new ConsoleWindowHandler(consoleWindow);
 			ConsoleOutput.consoleHandler = console;
 
-			string pluginDirectory = AppContext.BaseDirectory;
-			/*for(int i = 0; i < 4; i++)
-			{
-				pluginDirectory = Directory.GetParent(pluginDirectory).FullName;
-			}
-			pluginDirectory = Path.Combine(pluginDirectory, @"HMConConsole\bin\Debug\netcoreapp3.1");*/
-			HMConManager.Initialize(pluginDirectory);
+			string modulesDLLDirectory = AppContext.BaseDirectory;
+			HMConManager.Initialize(modulesDLLDirectory);
 
 			InputList.ItemsSource = job.InputFileList;
 
