@@ -128,19 +128,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HMCon3DPlugin\HMCon3DPlugin.csproj">
-      <Project>{d0eb9482-24f4-4c96-9fc9-420202ca0ffa}</Project>
-      <Name>HMCon3DPlugin</Name>
+    <ProjectReference Include="..\HMCon\HMCon.csproj">
+      <Project>{3C740C15-A473-4A2F-8D44-AE3065FA179D}</Project>
+      <Name>HMCon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HMConImagePlugin\HMConImagePlugin.csproj">
-      <Project>{3c1d45b7-b92c-4c8e-946a-5ba0ba810b95}</Project>
-      <Name>HMConImagePlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HMConMCPlugin\HMConMCPlugin.csproj">
-      <Project>{36d6c43f-3823-414d-9ad8-5bafa4874032}</Project>
-      <Name>HMConMCPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HMCon\HMCon.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon_delete.png" />
