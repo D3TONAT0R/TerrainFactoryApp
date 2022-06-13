@@ -72,9 +72,9 @@ namespace HMConApp
 		internal void UpdateModificationStack()
 		{
 			ModificationStack.Children.Clear();
-			for (int i = 0; i < job.exportSettings.modificationChain.Count; i++)
+			for (int i = 0; i < job.modificationChain.chain.Count; i++)
 			{
-				var m = job.exportSettings.modificationChain[i];
+				var m = job.modificationChain.chain[i];
 				stackEntries[m].StackIndex = i;
 				ModificationStack.Children.Add(stackEntries[m]);
 			}
@@ -82,14 +82,14 @@ namespace HMConApp
 
 		internal void OnModifierAdded(Modifier mod)
 		{
-			var entry = new ModifierStackEntry(this, mod, job.exportSettings, job.exportSettings.modificationChain.Count - 1);
+			var entry = new ModifierStackEntry(this, mod, job.modificationChain, job.modificationChain.chain.Count - 1);
 			stackEntries.Add(mod, entry);
 			ModificationStack.Children.Add(entry);
 		}
 
 		internal void OnModifierRemoved(ModifierStackEntry entry)
 		{
-			job.exportSettings.modificationChain.Remove(entry.mod);
+			job.modificationChain.chain.Remove(entry.mod);
 			stackEntries.Remove(entry.mod);
 			ModificationStack.Children.Remove(entry);
 		}
@@ -134,7 +134,7 @@ namespace HMConApp
 				ConsoleOutput.WriteLine("You selected " + modificatorDropDown.Items[i]);
 				var m = supportedModifiers[i].CreateModifier();
 				m.sourceCommand = supportedModifiers[i];
-				job.exportSettings.AddModifierToChain(m, false);
+				job.modificationChain.AddModifier(m, false);
 				OnModifierAdded(m);
 				//AddModifierComposite(m);
 			}

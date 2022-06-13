@@ -31,7 +31,7 @@ namespace HMConApp.Controls
 		internal Modifier mod;
 
 		MainWindow parentWindow;
-		ExportSettings settings;
+		ModificationChain modificationChain;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -68,11 +68,11 @@ namespace HMConApp.Controls
 			InitializeComponent();
 		}
 
-		public ModifierStackEntry(MainWindow parent, Modifier modifier, ExportSettings exportSettings, int i)
+		public ModifierStackEntry(MainWindow parent, Modifier modifier, ModificationChain modificationChain, int i)
 		{
 			parentWindow = parent;
 			mod = modifier;
-			settings = exportSettings;
+			this.modificationChain = modificationChain;
 			stackIndex = i;
 			InitializeComponent();
 
@@ -101,11 +101,11 @@ namespace HMConApp.Controls
 
 		private void OnMoveDown(object sender, RoutedEventArgs e)
 		{
-			if (stackIndex + 1 < settings.modificationChain.Count)
+			if (stackIndex + 1 < modificationChain.chain.Count)
 			{
-				var belowItem = settings.modificationChain[stackIndex + 1];
-				settings.modificationChain[stackIndex + 1] = mod;
-				settings.modificationChain[stackIndex] = belowItem;
+				var belowItem = modificationChain.chain[stackIndex + 1];
+				modificationChain.chain[stackIndex + 1] = mod;
+				modificationChain.chain[stackIndex] = belowItem;
 				stackIndex++;
 				parentWindow.UpdateModificationStack();
 			}
@@ -115,9 +115,9 @@ namespace HMConApp.Controls
 		{
 			if (stackIndex > 0)
 			{
-				var aboveItem = settings.modificationChain[stackIndex - 1];
-				settings.modificationChain[stackIndex - 1] = mod;
-				settings.modificationChain[stackIndex] = aboveItem;
+				var aboveItem = modificationChain.chain[stackIndex - 1];
+				modificationChain.chain[stackIndex - 1] = mod;
+				modificationChain.chain[stackIndex] = aboveItem;
 				stackIndex--;
 				parentWindow.UpdateModificationStack();
 			}
