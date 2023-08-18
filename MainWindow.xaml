@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HMConApp"
-        xmlns:Controls="clr-namespace:HMConApp.Controls" x:Class="HMConApp.MainWindow"
+        xmlns:local="clr-namespace:TerrainFactoryApp"
+        xmlns:Controls="clr-namespace:TerrainFactoryApp.Controls" x:Class="TerrainFactoryApp.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="553.576" Width="830.096" Background="White" UseLayoutRounding="True" SnapsToDevicePixels="True">
     <Grid x:Name="MainGrid" Margin="0">

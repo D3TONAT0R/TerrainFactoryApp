@@ -1,2 +1,2 @@
-# HMConApp
- HeightmapConverter (HMCon) Desktop Application using WPF
+# TerrainFactoryApp
+ TerrainFactory Desktop Application using WPF

@@ -1,5 +1,5 @@
-﻿using HMCon;
-using HMCon.Util;
+﻿using TerrainFactory;
+using TerrainFactory.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace HMConApp
+namespace TerrainFactoryApp
 {
 	public class ConsoleWindowHandler : IConsoleHandler
 	{
@@ -32,6 +32,11 @@ namespace HMConApp
 		public void DisplayProgressBar(string text, float progress)
 		{
 
+		}
+
+		public string GetInput(string prompt, List<string> queue)
+		{
+			throw new NotImplementedException();
 		}
 
 		public void WriteLine(string line)

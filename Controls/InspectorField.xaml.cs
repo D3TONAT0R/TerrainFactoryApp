@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HMConApp.Controls
+namespace TerrainFactoryApp.Controls
 {
 	/// <summary>
 	/// Interaction logic for InspectorField.xaml

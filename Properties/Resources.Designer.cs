@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 
-namespace HMConApp.Properties {
+namespace TerrainFactoryApp.Properties {
 	/// <summary>
 	///   A strongly-typed resource class, for looking up localized strings, etc.
 	/// </summary>
@@ -37,7 +37,7 @@ namespace HMConApp.Properties {
 		internal static global::System.Resources.ResourceManager ResourceManager {
 			get {
 				if((resourceMan == null)) {
-					global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HMConApp.Properties.Resources", typeof(Resources).Assembly);
+					global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TerrainFactoryApp.Properties.Resources", typeof(Resources).Assembly);
 					resourceMan = temp;
 				}
 				return resourceMan;

@@ -1,9 +1,9 @@
-﻿using HMCon;
-using HMCon.Export;
-using HMCon.Formats;
-using HMCon.Modification;
-using HMCon.Util;
-using HMConApp.Controls;
+﻿using TerrainFactory;
+using TerrainFactory.Export;
+using TerrainFactory.Formats;
+using TerrainFactory.Modification;
+using TerrainFactory.Util;
+using TerrainFactoryApp.Controls;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -11,8 +11,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using TerrainFactory.Commands;
 
-namespace HMConApp
+namespace TerrainFactoryApp
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
@@ -22,9 +23,7 @@ namespace HMConApp
 
 		ConsoleWindowHandler console;
 
-		public static ObservableCollection<ModificationCommand> supportedModifiers = new ObservableCollection<ModificationCommand>();
-
-		public Job job = new Job();
+		public Worksheet worksheet = new Worksheet();
 
 		Dictionary<Modifier, ModifierStackEntry> stackEntries = new Dictionary<Modifier, ModifierStackEntry>();
 
@@ -37,24 +36,23 @@ namespace HMConApp
 			ConsoleOutput.consoleHandler = console;
 
 			string modulesDLLDirectory = AppContext.BaseDirectory;
-			HMConManager.Initialize(modulesDLLDirectory);
+			TerrainFactoryManager.Initialize();
 
-			InputList.ItemsSource = job.InputFileList;
+			InputList.ItemsSource = worksheet.InputFileList;
 
 			RemoveFileButton.IsEnabled = false;
 			PreviewFileButton.IsEnabled = false;
 
-			foreach (var mod in CommandHandler.ModificationCommands)
+			foreach (var mod in Modifier.availableModifierTypes)
 			{
-				supportedModifiers.Add(mod);
 				var cbi = new ComboBoxItem()
 				{
-					Content = mod.command
+					Content = mod.Name
 				};
 				modificatorDropDown.Items.Add(cbi);
 			}
 
-			foreach (var ff in FileFormatManager.GetSupportedFormats())
+			foreach (var ff in FileFormatManager.GetSupportedFormats(FileFormat.FileSupportFlags.Import))
 			{
 				var toggle = new CheckBox()
 				{
@@ -72,9 +70,9 @@ namespace HMConApp
 		internal void UpdateModificationStack()
 		{
 			ModificationStack.Children.Clear();
-			for (int i = 0; i < job.modificationChain.chain.Count; i++)
+			for (int i = 0; i < worksheet.modificationChain.chain.Count; i++)
 			{
-				var m = job.modificationChain.chain[i];
+				var m = worksheet.modificationChain.chain[i];
 				stackEntries[m].StackIndex = i;
 				ModificationStack.Children.Add(stackEntries[m]);
 			}
@@ -82,14 +80,14 @@ namespace HMConApp
 
 		internal void OnModifierAdded(Modifier mod)
 		{
-			var entry = new ModifierStackEntry(this, mod, job.modificationChain, job.modificationChain.chain.Count - 1);
+			var entry = new ModifierStackEntry(this, mod, worksheet.modificationChain, worksheet.modificationChain.chain.Count - 1);
 			stackEntries.Add(mod, entry);
 			ModificationStack.Children.Add(entry);
 		}
 
 		internal void OnModifierRemoved(ModifierStackEntry entry)
 		{
-			job.modificationChain.chain.Remove(entry.mod);
+			worksheet.modificationChain.chain.Remove(entry.mod);
 			stackEntries.Remove(entry.mod);
 			ModificationStack.Children.Remove(entry);
 		}
@@ -105,8 +103,8 @@ namespace HMConApp
 			if (dialog.ShowDialog() == true)
 			{
 				string path = dialog.FileName;
-				job.InputFileList.Add(path);
-				InputList.SelectedIndex = job.InputFileList.Count - 1;
+				worksheet.InputFileList.Add(path);
+				InputList.SelectedIndex = worksheet.InputFileList.Count - 1;
 			}
 		}
 
@@ -114,7 +112,7 @@ namespace HMConApp
 		{
 			if (InputList.SelectedIndex >= 0)
 			{
-				job.InputFileList.RemoveAt(InputList.SelectedIndex);
+				worksheet.InputFileList.RemoveAt(InputList.SelectedIndex);
 			}
 		}
 
@@ -131,10 +129,8 @@ namespace HMConApp
 			if (i > 0)
 			{
 				i--;
-				ConsoleOutput.WriteLine("You selected " + modificatorDropDown.Items[i]);
-				var m = supportedModifiers[i].CreateModifier();
-				m.sourceCommand = supportedModifiers[i];
-				job.modificationChain.AddModifier(m, false);
+				var m = Modifier.CreateModifier(Modifier.availableModifierTypes[i]);
+				worksheet.modificationChain.AddModifier(m, false);
 				OnModifierAdded(m);
 				//AddModifierComposite(m);
 			}
@@ -144,17 +140,17 @@ namespace HMConApp
 		private void OnExportFormatChecked(object sender, RoutedEventArgs args)
 		{
 			var ff = (FileFormat)((CheckBox)sender).Tag;
-			job.exportSettings.outputFormats.Add(ff);
+			worksheet.outputFormats.AddFormat(ff);
 		}
 
 		private void OnExportFormatUnchecked(object sender, RoutedEventArgs args)
 		{
 			var ff = (FileFormat)((CheckBox)sender).Tag;
-			for (int i = 0; i < job.exportSettings.outputFormats.Count; i++)
+			for (int i = 0; i < worksheet.outputFormats.Count; i++)
 			{
-				if (job.exportSettings.outputFormats[i].GetType() == ff.GetType())
+				if (worksheet.outputFormats.list[i].GetType() == ff.GetType())
 				{
-					job.exportSettings.outputFormats.RemoveAt(i);
+					worksheet.outputFormats.list.RemoveAt(i);
 					return;
 				}
 			}
@@ -165,8 +161,8 @@ namespace HMConApp
 
 			if (Directory.Exists(Path.GetDirectoryName(outputPathBox.Text)))
 			{
-				job.outputPath = outputPathBox.Text;
-				job.ExportAll();
+				worksheet.outputPath = outputPathBox.Text;
+				worksheet.ExportAll();
 			}
 			else
 			{

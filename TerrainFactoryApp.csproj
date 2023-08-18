@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BCAD3233-2D20-4055-8C92-FF867EEA363B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>HMConApp</RootNamespace>
-    <AssemblyName>HMConApp</AssemblyName>
+    <RootNamespace>TerrainFactoryApp</RootNamespace>
+    <AssemblyName>TerrainFactoryApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -128,9 +128,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HMCon\HMCon.csproj">
+    <ProjectReference Include="..\TerrainFactory\TerrainFactory.csproj">
       <Project>{3C740C15-A473-4A2F-8D44-AE3065FA179D}</Project>
-      <Name>HMCon</Name>
+      <Name>TerrainFactory</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

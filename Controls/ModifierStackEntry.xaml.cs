@@ -1,7 +1,7 @@
-﻿using HMCon;
-using HMCon.Export;
-using HMCon.Modification;
-using HMCon.Util;
+﻿using TerrainFactory;
+using TerrainFactory.Export;
+using TerrainFactory.Modification;
+using TerrainFactory.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace HMConApp.Controls
+namespace TerrainFactoryApp.Controls
 {
 	/// <summary>
 	/// Interaction logic for ModifierStackEntry.xaml
@@ -150,7 +150,7 @@ namespace HMConApp.Controls
 
 		private void OnReset(object sender, RoutedEventArgs e)
 		{
-			var resetMod = mod.sourceCommand.CreateModifier();
+			var resetMod = Modifier.CreateModifier(mod.GetType());
 			foreach(var c in inspector.Children)
 			{
 				if(c is InspectorField f)
