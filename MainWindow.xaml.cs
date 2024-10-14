@@ -23,7 +23,7 @@ namespace TerrainFactoryApp
 
 		ConsoleWindowHandler console;
 
-		public Worksheet worksheet = new Worksheet();
+		public Project project = new Project();
 
 		Dictionary<Modifier, ModifierStackEntry> stackEntries = new Dictionary<Modifier, ModifierStackEntry>();
 
@@ -38,7 +38,7 @@ namespace TerrainFactoryApp
 			string modulesDLLDirectory = AppContext.BaseDirectory;
 			TerrainFactoryManager.Initialize();
 
-			InputList.ItemsSource = worksheet.InputFileList;
+			InputList.ItemsSource = project.InputFileList;
 
 			RemoveFileButton.IsEnabled = false;
 			PreviewFileButton.IsEnabled = false;
@@ -70,9 +70,9 @@ namespace TerrainFactoryApp
 		internal void UpdateModificationStack()
 		{
 			ModificationStack.Children.Clear();
-			for (int i = 0; i < worksheet.modificationChain.chain.Count; i++)
+			for (int i = 0; i < project.modificationChain.chain.Count; i++)
 			{
-				var m = worksheet.modificationChain.chain[i];
+				var m = project.modificationChain.chain[i];
 				stackEntries[m].StackIndex = i;
 				ModificationStack.Children.Add(stackEntries[m]);
 			}
@@ -80,14 +80,14 @@ namespace TerrainFactoryApp
 
 		internal void OnModifierAdded(Modifier mod)
 		{
-			var entry = new ModifierStackEntry(this, mod, worksheet.modificationChain, worksheet.modificationChain.chain.Count - 1);
+			var entry = new ModifierStackEntry(this, mod, project.modificationChain, project.modificationChain.chain.Count - 1);
 			stackEntries.Add(mod, entry);
 			ModificationStack.Children.Add(entry);
 		}
 
 		internal void OnModifierRemoved(ModifierStackEntry entry)
 		{
-			worksheet.modificationChain.chain.Remove(entry.mod);
+			project.modificationChain.chain.Remove(entry.mod);
 			stackEntries.Remove(entry.mod);
 			ModificationStack.Children.Remove(entry);
 		}
@@ -103,8 +103,8 @@ namespace TerrainFactoryApp
 			if (dialog.ShowDialog() == true)
 			{
 				string path = dialog.FileName;
-				worksheet.InputFileList.Add(path);
-				InputList.SelectedIndex = worksheet.InputFileList.Count - 1;
+				project.InputFileList.Add(path);
+				InputList.SelectedIndex = project.InputFileList.Count - 1;
 			}
 		}
 
@@ -112,7 +112,7 @@ namespace TerrainFactoryApp
 		{
 			if (InputList.SelectedIndex >= 0)
 			{
-				worksheet.InputFileList.RemoveAt(InputList.SelectedIndex);
+				project.InputFileList.RemoveAt(InputList.SelectedIndex);
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace TerrainFactoryApp
 			{
 				i--;
 				var m = Modifier.CreateModifier(Modifier.availableModifierTypes[i]);
-				worksheet.modificationChain.AddModifier(m, false);
+				project.modificationChain.AddModifier(m, false);
 				OnModifierAdded(m);
 				//AddModifierComposite(m);
 			}
@@ -140,17 +140,17 @@ namespace TerrainFactoryApp
 		private void OnExportFormatChecked(object sender, RoutedEventArgs args)
 		{
 			var ff = (FileFormat)((CheckBox)sender).Tag;
-			worksheet.outputFormats.AddFormat(ff);
+			project.outputFormats.AddFormat(ff);
 		}
 
 		private void OnExportFormatUnchecked(object sender, RoutedEventArgs args)
 		{
 			var ff = (FileFormat)((CheckBox)sender).Tag;
-			for (int i = 0; i < worksheet.outputFormats.Count; i++)
+			for (int i = 0; i < project.outputFormats.Count; i++)
 			{
-				if (worksheet.outputFormats.list[i].GetType() == ff.GetType())
+				if (project.outputFormats.list[i].GetType() == ff.GetType())
 				{
-					worksheet.outputFormats.list.RemoveAt(i);
+					project.outputFormats.list.RemoveAt(i);
 					return;
 				}
 			}
@@ -161,8 +161,8 @@ namespace TerrainFactoryApp
 
 			if (Directory.Exists(Path.GetDirectoryName(outputPathBox.Text)))
 			{
-				worksheet.outputPath = outputPathBox.Text;
-				worksheet.ExportAll();
+				project.OutputPath = outputPathBox.Text;
+				project.ProcessAll();
 			}
 			else
 			{
