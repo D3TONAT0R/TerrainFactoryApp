@@ -1,5 +1,4 @@
 ﻿using TerrainFactory;
-using TerrainFactory.Export;
 using TerrainFactory.Formats;
 using TerrainFactory.Modification;
 using TerrainFactory.Util;
@@ -38,7 +37,7 @@ namespace TerrainFactoryApp
 			string modulesDLLDirectory = AppContext.BaseDirectory;
 			TerrainFactoryManager.Initialize();
 
-			InputList.ItemsSource = project.InputFileList;
+			InputList.ItemsSource = project.InputData.Files;
 
 			RemoveFileButton.IsEnabled = false;
 			PreviewFileButton.IsEnabled = false;
@@ -103,8 +102,8 @@ namespace TerrainFactoryApp
 			if (dialog.ShowDialog() == true)
 			{
 				string path = dialog.FileName;
-				project.InputFileList.Add(path);
-				InputList.SelectedIndex = project.InputFileList.Count - 1;
+				project.InputData.Add(path);
+				InputList.SelectedIndex = project.InputData.FileCount - 1;
 			}
 		}
 
@@ -112,7 +111,7 @@ namespace TerrainFactoryApp
 		{
 			if (InputList.SelectedIndex >= 0)
 			{
-				project.InputFileList.RemoveAt(InputList.SelectedIndex);
+				project.InputData.Files.RemoveAt(InputList.SelectedIndex);
 			}
 		}
 
