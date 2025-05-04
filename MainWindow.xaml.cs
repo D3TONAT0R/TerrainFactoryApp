@@ -51,7 +51,7 @@ namespace TerrainFactoryApp
 				modificatorDropDown.Items.Add(cbi);
 			}
 
-			foreach (var ff in FileFormatManager.GetSupportedFormats(FileFormat.FileSupportFlags.Import))
+			foreach (var ff in FileFormatRegistry.GetSupportedFormats(FileFormat.FileSupportFlags.Import))
 			{
 				var toggle = new CheckBox()
 				{
